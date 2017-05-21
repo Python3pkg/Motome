@@ -1,7 +1,7 @@
 # Import the future
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import absolute_import
+
+
+
 
 import datetime
 import hashlib
@@ -323,7 +323,7 @@ class NoteModel(object):
         """
         if filepath is None:
             filepath = self.filepath
-        if not 'title' in self.metadata.keys():
+        if not 'title' in list(self.metadata.keys()):
             self.metadata['title'] = self.notename
         if self.content[-1] == '\n':
             filedata = self.content
@@ -361,7 +361,7 @@ class NoteModel(object):
             content = ''.join(s[:-2])
             meta = yaml.safe_load(m.strip())  # use safe_load to prevent loading non-standard YAML tags
             # sanity check, is it valid metadata?
-            if meta is None or 'title' not in meta.keys():
+            if meta is None or 'title' not in list(meta.keys()):
                 meta = dict()
                 content = data
         except IndexError:

@@ -1,7 +1,7 @@
 # Import the future
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import absolute_import
+
+
+
 
 # Import standard library modules
 import logging
@@ -9,7 +9,7 @@ import os
 import shutil
 import sys
 import time
-import cPickle as pickle
+import pickle as pickle
 import yaml
 from datetime import datetime
 
@@ -258,7 +258,7 @@ class MainWindow(QtGui.QMainWindow):
                                                'func': lambda item=None: self.delete_current_note()}
                                     }
         # create all the shortcuts
-        for s in self.keyboard_shortcuts.values():
+        for s in list(self.keyboard_shortcuts.values()):
             QtGui.QShortcut(s['seq'], self, s['func'])
 
     def setup_settings_button_icons(self):
@@ -302,8 +302,8 @@ class MainWindow(QtGui.QMainWindow):
         # build the completer list
         completer_list = set()
         try:
-            for note in self.session_notes_dict.values():
-                if 'tags' in note.metadata.keys():
+            for note in list(self.session_notes_dict.values()):
+                if 'tags' in list(note.metadata.keys()):
                     for t in note.metadata['tags'].split():
                         completer_list.add(t)
             # attach a completer to the tag editor
@@ -361,7 +361,7 @@ class MainWindow(QtGui.QMainWindow):
             except yaml.YAMLError:
                 self.conf = {}
 
-            if not 'conf_notesLocation' in self.conf.keys():
+            if not 'conf_notesLocation' in list(self.conf.keys()):
                 self.first_run = True
             else:
                 self.notes_dir = self.conf['conf_notesLocation']
@@ -383,28 +383,28 @@ class MainWindow(QtGui.QMainWindow):
 
     def set_config_vars(self):
         # Set some configuration variables
-        if 'conf_checkbox_recordonsave' in self.conf.keys() and int(self.conf['conf_checkbox_recordonsave']) > 0:
+        if 'conf_checkbox_recordonsave' in list(self.conf.keys()) and int(self.conf['conf_checkbox_recordonsave']) > 0:
             self.record_on_save = True
         else:
             self.record_on_save = False
 
-        if 'conf_checkbox_recordonexit' in self.conf.keys() and int(self.conf['conf_checkbox_recordonexit']) > 0:
+        if 'conf_checkbox_recordonexit' in list(self.conf.keys()) and int(self.conf['conf_checkbox_recordonexit']) > 0:
             self.record_on_exit = True
         else:
             self.record_on_exit = False
 
-        if 'conf_checkbox_recordonswitch' in self.conf.keys() and int(self.conf['conf_checkbox_recordonswitch']) > 0:
+        if 'conf_checkbox_recordonswitch' in list(self.conf.keys()) and int(self.conf['conf_checkbox_recordonswitch']) > 0:
             self.record_on_switch = True
         else:
             self.record_on_switch = False
 
-        if 'conf_checkbox_firstlinetitle' in self.conf.keys() and int(self.conf['conf_checkbox_firstlinetitle']) > 0:
+        if 'conf_checkbox_firstlinetitle' in list(self.conf.keys()) and int(self.conf['conf_checkbox_firstlinetitle']) > 0:
             self.first_line_title = True
         else:
             self.first_line_title = False
 
         # Set the window location and size
-        if 'window_x' in self.conf.keys() and not self.portable_mode:
+        if 'window_x' in list(self.conf.keys()) and not self.portable_mode:
             rect = QtCore.QRect(int(self.conf['window_x']),
                                 int(self.conf['window_y']),
                                 int(self.conf['window_width']),
@@ -412,7 +412,7 @@ class MainWindow(QtGui.QMainWindow):
             self.setGeometry(rect)
 
     def load_styles(self):
-        if 'style' in self.conf.keys():
+        if 'style' in list(self.conf.keys()):
             self.style_dir = os.path.join(self.app_data_dir, 'styles', self.conf['style'])
         else:
             self.style_dir = os.path.join(APP_DIR, 'styles', 'default')
@@ -482,7 +482,7 @@ class MainWindow(QtGui.QMainWindow):
             self.set_config_vars()
             # set the notes directories
             try:
-                self.conf['conf_notesLocation'] = self.conf['conf_notesLocations'].keys()[0]
+                self.conf['conf_notesLocation'] = list(self.conf['conf_notesLocations'].keys())[0]
                 self.notes_dir = self.conf['conf_notesLocation']
                 self.notes_data_dir = os.path.join(self.notes_dir, NOTE_DATA_DIR)
                 if len(self.conf['conf_notesLocations']) > 1:
@@ -519,7 +519,7 @@ class MainWindow(QtGui.QMainWindow):
             self.tagEditor.blockSignals(False)
         else:
             # user hit cancel
-            if not 'conf_notesLocations' in self.conf.keys() or len(self.conf['conf_notesLocations']) == 0:
+            if not 'conf_notesLocations' in list(self.conf.keys()) or len(self.conf['conf_notesLocations']) == 0:
                 sys.exit(1)
 
     def process_keyseq(self, seq):
@@ -609,7 +609,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def update_notesdir(self, location_val):
         try:
-            location_key = [k for k, v in self.conf['conf_notesLocations'].iteritems() if v == location_val][0]
+            location_key = [k for k, v in self.conf['conf_notesLocations'].items() if v == location_val][0]
             self.notes_dir = location_key
             self.notesList.notes_dir = location_key
         except IndexError:
@@ -803,13 +803,13 @@ class MainWindow(QtGui.QMainWindow):
         rename = False
         if self.first_line_title:
             t = clean_filename(self.current_note.first_line, '').strip()
-            if 'title' not in metadata.keys() or metadata['title'] != t:
+            if 'title' not in list(metadata.keys()) or metadata['title'] != t:
                 metadata['title'] = t
                 rename = True
 
         metadata['tags'] = self.tagEditor.text()
 
-        if 'conf_author' in self.conf.keys():
+        if 'conf_author' in list(self.conf.keys()):
             metadata['author'] = self.conf['conf_author']
 
         # update the metadata

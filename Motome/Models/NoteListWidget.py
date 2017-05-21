@@ -1,7 +1,7 @@
 # Import the future
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import absolute_import
+
+
+
 
 import glob
 import os
@@ -62,7 +62,7 @@ class NoteListWidget(QtGui.QListWidget):
 
     def update_list(self):
         self._update_notemodel_dict()
-        for value in self.session_notemodel_dict.values():
+        for value in list(self.session_notemodel_dict.values()):
             if len(self.findItems(value.title, QtCore.Qt.MatchWildcard)) == 0:
                 n = NoteListWidgetItem(value)
                 self.addItem(n)
@@ -126,7 +126,7 @@ class NoteListWidget(QtGui.QListWidget):
         if self.notes_dir is None or self.notes_dir == '':
             return
         notepaths = set(glob.glob(self.notes_dir + '/*' + NOTE_EXTENSION))
-        notenames = map(os.path.basename, notepaths)
+        notenames = list(map(os.path.basename, notepaths))
         note_keys = set(self.session_notemodel_dict.keys())
         keys_missing_notes = note_keys - set(notenames)
 
@@ -137,7 +137,7 @@ class NoteListWidget(QtGui.QListWidget):
         # add notes missing keys
         for filepath in notepaths:
             filename = os.path.basename(filepath)
-            if filename not in self.session_notemodel_dict.keys():
+            if filename not in list(self.session_notemodel_dict.keys()):
                 note = NoteModel(filepath)
                 self.session_notemodel_dict[note.filename] = note
 

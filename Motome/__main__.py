@@ -1,5 +1,5 @@
 # Import the future
-from __future__ import absolute_import
+
 
 # Import standard library modules
 import logging

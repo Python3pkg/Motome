@@ -216,4 +216,4 @@ class Ui_MainWindow(object):
         self.btnPrevDate.setToolTip(QtGui.QApplication.translate("MainWindow", "Older", None, QtGui.QApplication.UnicodeUTF8))
         self.btnNextDate.setToolTip(QtGui.QApplication.translate("MainWindow", "Newer", None, QtGui.QApplication.UnicodeUTF8))
 
-import MainWindow_rc
+from . import MainWindow_rc

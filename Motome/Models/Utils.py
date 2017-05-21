@@ -1,11 +1,11 @@
 # Import the future
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import absolute_import
+
+
+
 
 # Import standard library modules
 import cgi
-import cPickle
+import pickle
 import difflib
 import logging
 import glob
@@ -68,7 +68,7 @@ def pickle_find_NoteModel(module, name):
     if module == 'Motome.Models.NoteModel' and name == 'NoteModel':
         return NoteModel
     # Forbid everything else.
-    raise cPickle.UnpicklingError("module '%s.%s' is forbidden" %(module, name))
+    raise pickle.UnpicklingError("module '%s.%s' is forbidden" %(module, name))
 
 
 def open_and_parse_note(filepath):
@@ -233,7 +233,7 @@ def transition_versions(notes_dir):
         try:
             data = NoteModel.enc_read(notepath)
             c, m = parse_note_content_old(data)
-            if len(m.keys()) == 0:
+            if len(list(m.keys())) == 0:
                 new_data = c
             else:
                 new_data = c + YAML_BRACKET + '\n' + yaml.safe_dump(m, default_flow_style=False) + YAML_BRACKET

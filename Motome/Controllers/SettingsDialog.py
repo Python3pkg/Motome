@@ -1,7 +1,7 @@
 # Import the future
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import absolute_import
+
+
+
 
 # Import standard library modules
 import os
@@ -32,7 +32,7 @@ class SettingsDialog(QtGui.QDialog):
 
         try:
             self.ui.tbl_notesLocations.blockSignals(True)
-            for k, v in self.conf['conf_notesLocations'].iteritems():
+            for k, v in self.conf['conf_notesLocations'].items():
                 self._insert_noteslocation_row(v, k)
             self.ui.tbl_notesLocations.blockSignals(False)
         except KeyError:
@@ -43,25 +43,25 @@ class SettingsDialog(QtGui.QDialog):
         except KeyError:
             pass
 
-        if 'conf_checkbox_recordonsave' in self.conf.keys():
+        if 'conf_checkbox_recordonsave' in list(self.conf.keys()):
             if int(self.conf['conf_checkbox_recordonsave']) == 0:
                 self.ui.conf_checkbox_recordonsave.setChecked(False)
         else:
             self.ui.conf_checkbox_recordonsave.setChecked(True)
 
-        if 'conf_checkbox_recordonexit' in self.conf.keys():
+        if 'conf_checkbox_recordonexit' in list(self.conf.keys()):
             if int(self.conf['conf_checkbox_recordonexit']) == 0:
                 self.ui.conf_checkbox_recordonexit.setChecked(False)
         else:
             self.ui.conf_checkbox_recordonexit.setChecked(True)
 
-        if 'conf_checkbox_recordonswitch' in self.conf.keys():
+        if 'conf_checkbox_recordonswitch' in list(self.conf.keys()):
             if int(self.conf['conf_checkbox_recordonswitch']) == 0:
                 self.ui.conf_checkbox_recordonswitch.setChecked(False)
         else:
             self.ui.conf_checkbox_recordonswitch.setChecked(True)
 
-        if 'conf_checkbox_firstlinetitle' in self.conf.keys():
+        if 'conf_checkbox_firstlinetitle' in list(self.conf.keys()):
             if int(self.conf['conf_checkbox_firstlinetitle']) == 0:
                 self.ui.conf_checkbox_firstlinetitle.setChecked(False)
         else:
@@ -79,7 +79,7 @@ class SettingsDialog(QtGui.QDialog):
     def add_folder_location(self):
         notesdir = QtGui.QFileDialog.getExistingDirectory(self, 'Notes Directory', os.path.expanduser('~'))
         try:
-            if notesdir not in self.conf['conf_notesLocations'].keys():
+            if notesdir not in list(self.conf['conf_notesLocations'].keys()):
                 self._add_noteslocation_row(notesdir)
         except KeyError:
             self.conf['conf_notesLocations'] = {}
@@ -116,6 +116,6 @@ class SettingsDialog(QtGui.QDialog):
         else:
             item_key = self.ui.tbl_notesLocations.item(row, col).text()
             conf_val = self.ui.tbl_notesLocations.item(row, 0).text()
-            conf_key = [k for k, v in self.conf['conf_notesLocations'].iteritems() if v == conf_val][0]
+            conf_key = [k for k, v in self.conf['conf_notesLocations'].items() if v == conf_val][0]
             del self.conf['conf_notesLocations'][conf_key]
             self.conf['conf_notesLocations'][item_key] = conf_val

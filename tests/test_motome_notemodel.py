@@ -29,7 +29,7 @@ class TestNoteModel(unittest.TestCase):
         self.db_notes = dict()
         for filepath in self.notepaths:
             filename = os.path.basename(filepath)
-            if filename not in self.db_notes.keys():
+            if filename not in list(self.db_notes.keys()):
                 note = NoteModel(filepath)
                 self.db_notes[note.filename] = note
 
@@ -99,7 +99,7 @@ class TestNoteModel(unittest.TestCase):
         self.assertNotEqual(zen_note.load_old_note(0), (None, None))
 
     def test_get_changed_content(self):
-        notename = self.db_notes.keys()[0]
+        notename = list(self.db_notes.keys())[0]
         note = self.db_notes[notename]
         filepath = note.filepath
 
@@ -117,7 +117,7 @@ class TestNoteModel(unittest.TestCase):
 
         # Write changed data not from NoteModel
         filedata = new_content + END_OF_TEXT + '\n'
-        for key, value in metadata.items():
+        for key, value in list(metadata.items()):
             filedata = filedata + '{0}:{1}\n'.format(key, value)
         NoteModel.enc_write(filepath, filedata)
 
@@ -129,7 +129,7 @@ class TestNoteModel(unittest.TestCase):
 
         # Reset file
         filedata = content + END_OF_TEXT + '\n'
-        for key, value in metadata.items():
+        for key, value in list(metadata.items()):
             filedata = filedata + '{0}:{1}\n'.format(key, value)
         NoteModel.enc_write(filepath, filedata)
 

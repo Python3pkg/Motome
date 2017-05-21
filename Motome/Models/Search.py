@@ -1,7 +1,7 @@
 # Import the future
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import absolute_import
+
+
+
 
 # Import configuration values
 from Motome.config import TAG_QUERY_CHAR

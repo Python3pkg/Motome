@@ -1,7 +1,7 @@
 # Import the future
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import absolute_import
+
+
+
 
 # Import standard library modules
 import cgi
@@ -84,7 +84,7 @@ class MotomeTextBrowser(QtGui.QTextBrowser):
                                    'InsFile':   {'seq': QtGui.QKeySequence('Ctrl+Shift+K'),
                                                  'func': lambda item=None: self.process_insertseq('ctrl_shift_k')}
                                    }
-        for s in self.keyboard_shortcuts.values():
+        for s in list(self.keyboard_shortcuts.values()):
             QtGui.QShortcut(s['seq'], self, s['func'])
 
     def process_keyseq(self, seq):
